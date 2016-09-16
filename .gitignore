@@ -1,0 +1,12 @@
+# Created by .ignore support plugin (hsz.mobi)
+.gitignore
+.idea/
+d-pictures.json
+index.js
+index.js.map
+node_modules/
+p-dcim.json
+p-digital-photo.json
+src/*.js
+src/*.js.map
+typings/
