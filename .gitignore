@@ -10,3 +10,4 @@ p-digital-photo.json
 src/*.js
 src/*.js.map
 typings/
+d-dcim.json

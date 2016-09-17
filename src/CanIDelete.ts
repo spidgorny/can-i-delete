@@ -12,9 +12,14 @@ export default class CanIDelete {
 	private threshold: number;
 
 	constructor(from: string, to: string) {
-		this.threshold = 90;
+		this.threshold = 60;
 		this.pathFrom = from;
 		this.pathTo = to;
+	}
+
+	setThreshold(t: number) {
+		this.threshold = t;
+		console.log('Threshold: ', this.threshold);
 	}
 
 	scanPath(path: string) {
@@ -97,15 +102,25 @@ export default class CanIDelete {
 		console.log('Done');
 	}
 
-	compareOneToMany(linearTo: Array<Folder>, bar, folder: Folder) {
+	compareOneToMany(linearTo: Array<Folder>, bar, folder: Folder, i: number) {
+		console.log(i, folder.toString());
+		let similarityHistory = [];
 		linearTo.forEach((candidate: Folder) => {
 			let similarity = folder.compare(candidate);
 			if (similarity > this.threshold) {
 				console.log();	// <br /> after progress bar
-				console.log(folder.toString(), candidate.toString(), similarity);
+				console.log(similarity.toFixed(3)+'%');
+				console.log(folder.toString());
+				console.log(candidate.toString());
+				console.log();
 			}
+			similarityHistory.push(similarity);
 			bar.tick();
 		});
+		//let sum = similarityHistory.reduce(function(a, b) { return a + b; });
+		//let avg = sum / similarityHistory.length;
+		let max = similarityHistory.reduce(function(a, b) { return Math.max(a, b); });
+		console.log('compared', similarityHistory.length, 'times', 'max', max.toFixed(3)+'%');
 	}
 
 }

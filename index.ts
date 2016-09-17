@@ -21,7 +21,9 @@ function testProgress() {
 
 // testProgress();
 
-let pathFrom = 'p:\\DCIM';
+//let pathFrom = 'p:\\DCIM';
+let pathFrom = 'd:\\Pictures';
 let pathTo = 'p:\\Digital Photo';
 let cid = new CanIDelete(pathFrom, pathTo);
+cid.setThreshold(40);
 cid.run();

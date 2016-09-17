@@ -12,6 +12,8 @@ export default class FileInFolder {
 	}
 
 	isIn(files: Array<FileInFolder>) {
+		// empty folder is not comparable with other empty folder
+		if (!files.length) return false;
 		return files.some((file) => {
 			if (_.isMatch(file, {
 					name: this.name,
