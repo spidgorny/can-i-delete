@@ -1,7 +1,6 @@
-
-
 import Folder from "./Folder";
 import FileInFolder from "./FileInFolder";
+const _ = require('underscore');
 
 export default class FolderTree {
 
@@ -35,6 +34,16 @@ export default class FolderTree {
 
 		this.tree = tree;
 		return tree;
+	}
+
+	remove(folderName: string) {
+		console.log('Removing', folderName)
+		let removeIndex = _.findIndex(this.tree.children, (folder: Folder) => {
+			return folder.name == folderName;
+		});
+		console.log(this.tree.children.length, removeIndex);
+		this.tree.children.splice(removeIndex, 1);
+		console.log(this.tree.children.length, removeIndex);
 	}
 
 	static linearize(tree: Folder) {

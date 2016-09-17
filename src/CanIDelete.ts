@@ -19,7 +19,7 @@ export default class CanIDelete {
 
 	setThreshold(t: number) {
 		this.threshold = t;
-		console.log('Threshold: ', this.threshold);
+		console.log('Threshold', this.threshold);
 	}
 
 	run() {

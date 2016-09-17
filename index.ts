@@ -22,13 +22,14 @@ function testProgress() {
 
 // testProgress();
 
-let pathFrom = 'p:\\DCIM';
+// let pathFrom = 'p:\\DCIM';
 // let pathFrom = 'd:\\Pictures';
-// let pathFrom = 'p:\\';
+let pathFrom = 'p:\\';
 let pathTo = 'p:\\Digital Photo';
 
 let dirFrom = new FolderTree(pathFrom);
 dirFrom.scanPath();
+dirFrom.remove('Digital Photo');
 let dirTo = new FolderTree(pathTo);
 dirTo.scanPath();
 
