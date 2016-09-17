@@ -1,17 +1,17 @@
+import FolderTree from "./FolderTree";
 const _ = require('underscore');
 const assign = require('object.assign').getPolyfill();
-import FileInFolder from './FileInFolder';
 import Folder from './Folder';
 
 export default class CanIDelete {
 
-	pathFrom: string;
+	pathFrom: FolderTree;
 
-	pathTo: string;
+	pathTo: FolderTree;
 
 	private threshold: number;
 
-	constructor(from: string, to: string) {
+	constructor(from: FolderTree, to: FolderTree) {
 		this.threshold = 60;
 		this.pathFrom = from;
 		this.pathTo = to;
@@ -22,62 +22,13 @@ export default class CanIDelete {
 		console.log('Threshold: ', this.threshold);
 	}
 
-	scanPath(path: string) {
-		const fs = require('fs');
-		console.log('Reading files from ' + path);
-		let cacheFile = path.replace(':', '').replace('\\', '-').replace(' ', '-').toLowerCase() + '.json';
-
-		let tree;
-		if (!fs.existsSync(cacheFile)) {
-			let dirTree = require('directory-tree');
-			tree = dirTree(path);
-			console.log('Done');
-			fs.writeFileSync(cacheFile, JSON.stringify(tree));
-			console.log('Cached');
-		} else {
-			let json = fs.readFileSync(cacheFile);
-			tree = JSON.parse(json);
-		}
-		console.log('tree', tree.children.length);
-		return tree;
-	}
-
-	linearize(tree: Folder) {
-		let folderList = [];
-		if (tree.children) {
-			let files = [];
-			tree.children.forEach((folder: Folder) => {
-				//console.log(folder.path);
-				if (folder.children) {
-					let subFolder = this.linearize(folder);
-					folderList = folderList.concat(subFolder);
-				} else {
-					files.push(new FileInFolder(folder));
-				}
-			});
-			folderList.push(new Folder({
-				path: tree.path,
-				name: tree.name,
-				size: tree.size,
-				extension: tree.extension,
-				files: files,
-			}));
-		} else {
-			throw new Error('this should never happen');
-		}
-		return folderList;
-	}
-
 	run() {
-		let dirFrom = this.scanPath(this.pathFrom);
-		let dirTo = this.scanPath(this.pathTo);
-
-		let linearFrom = this.linearize(dirFrom);
-		let linearTo = this.linearize(dirTo);
+		let linearFrom = FolderTree.linearize(this.pathFrom.tree);
+		let linearTo = FolderTree.linearize(this.pathTo.tree);
 		//console.log(linearTo);
 
-		var ProgressBar = require('progress');
-		var bar = new ProgressBar(':percent [:bar] :elapsed/:eta', {
+		let ProgressBar = require('progress');
+		let bar = new ProgressBar(':percent [:bar] :elapsed/:eta', {
 			total: linearFrom.length * linearTo.length,
 			//stream: process.stdout,
 			width: 100,
@@ -103,7 +54,7 @@ export default class CanIDelete {
 	}
 
 	compareOneToMany(linearTo: Array<Folder>, bar, folder: Folder, i: number) {
-		console.log(i, folder.toString());
+		// console.log(i, folder.toString());
 		let similarityHistory = [];
 		linearTo.forEach((candidate: Folder) => {
 			let similarity = folder.compare(candidate);
@@ -120,7 +71,7 @@ export default class CanIDelete {
 		//let sum = similarityHistory.reduce(function(a, b) { return a + b; });
 		//let avg = sum / similarityHistory.length;
 		let max = similarityHistory.reduce(function(a, b) { return Math.max(a, b); });
-		console.log('compared', similarityHistory.length, 'times', 'max', max.toFixed(3)+'%');
+		// console.log('compared', similarityHistory.length, 'times', 'max', max.toFixed(3)+'%');
 	}
 
 }
