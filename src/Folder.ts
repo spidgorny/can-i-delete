@@ -31,6 +31,7 @@ export default class Folder {
 
 	compare(candidate: Folder) {
 		if (!this.files.length) return 0;
+		if (!this.size) return 0;
 		if (!candidate.files.length) return 0;
 		let same = 0;
 		this.files.forEach((file) => {

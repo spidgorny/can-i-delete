@@ -60,9 +60,7 @@ export default class CanIDelete {
 			let similarity = folder.compare(candidate);
 			if (similarity > this.threshold) {
 				console.log();	// <br /> after progress bar
-				console.log(similarity.toFixed(3)+'%');
-				console.log(folder.toString());
-				console.log(candidate.toString());
+				console.log(similarity.toFixed(3)+'%', '\t', folder.toString(), '\t', candidate.toString());
 				console.log();
 			}
 			similarityHistory.push(similarity);
