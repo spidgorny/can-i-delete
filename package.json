@@ -10,11 +10,14 @@
   "license": "ISC",
   "dependencies": {
     "directory-tree": "^1.1.0",
+    "get-folder-size": "^1.0.0",
     "log-timestamp": "^0.1.2",
     "multiprocessing": "^0.5.1",
     "object.assign": "^4.0.4",
     "paralleljs": "^0.2.1",
+    "prettier-bytes": "^1.0.3",
     "progress": "^1.1.8",
-    "underscore": "^1.8.3"
+    "underscore": "^1.8.3",
+    "underscore.string": "^3.3.4"
   }
 }
